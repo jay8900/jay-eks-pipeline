@@ -32,7 +32,7 @@ This repository contains the following files:
 
 2. Run:
     ~~~bash
-    ./up.sh
+    ./iac.sh
     ~~~
 
 #### Note
