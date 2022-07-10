@@ -23,13 +23,14 @@ phases:
       # Build Docker Image
       - echo "Build started on `date`"
       - echo "Building the Docker image..."
-      - docker build --tag $REPOSITORY_URI:$TAG .
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG 
   post_build:
     commands:
       # Push Docker Image to ECR Repository
       - echo "Build completed on `date`"
       - echo "Pushing the Docker image to ECR Repository"
-      - docker push $REPOSITORY_URI:$TAG
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
       - echo "Docker Image Push to ECR Completed -  $REPOSITORY_URI:$TAG"    
       # Extracting AWS Credential Information using STS Assume Role for kubectl
       - echo "Setting Environment Variables related to AWS CLI for Kube Config Setup"          
