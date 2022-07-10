@@ -40,5 +40,5 @@ This repository contains the following files:
 Any arguments that you pass to `up.sh` will be forwarded to the AWS CLI commands within the script. Thus, it is possible to specify an explicit region fo the cluster as follows:
 
 ~~~bash
-./up.sh --region eu-west-1
+./iac.sh --region eu-west-1
 ~~~
