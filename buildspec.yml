@@ -5,14 +5,12 @@ phases:
       - echo "Install Phase - Nothing to do using latest Amazon Linux Docker Image for CodeBuild which has all AWS Tools - https://github.com/aws/aws-codebuild-docker-images/blob/master/al2/x86_64/standard/3.0/Dockerfile"
   pre_build:
       commands:
-        # Docker Image Tag with Date Time & Code Buiild Resolved Source Version
-        - TAG="$(date +%Y-%m-%d.%H.%M.%S).$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
-        # Update Image tag in our Kubernetes Deployment Manifest        
-        - echo "Update Image tag in kube-manifest..."
-        - sed -i 's@CONTAINER_IMAGE@'"$REPOSITORY_URI:$TAG"'@' kube-manifests/01-DEVOPS-Nginx-Deployment.yml
         # Verify AWS CLI Version        
         - echo "Verify AWS CLI Version..."
         - aws --version
+        # Update Image tag in our Kubernetes Deployment Manifest        
+        - echo "Update Image tag in kube-manifest..."
+        - sed -i 's@CONTAINER_IMAGE@'"$REPOSITORY_URI:$TAG"'@' kube-manifests/deployment.yml
         # Login to ECR Registry for docker to push the image to ECR Repository
         - echo "Login in to Amazon ECR..."
         - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
@@ -32,7 +30,7 @@ phases:
       - echo "Build completed on `date`"
       - echo "Pushing the Docker image to ECR Repository"
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
-      - echo "Docker Image Push to ECR Completed -  $REPOSITORY_URI:$TAG"    
+      - echo "Docker Image Push to ECR Completed -  $REPOSITORY_URI:$TAG"   
       # Extracting AWS Credential Information using STS Assume Role for kubectl
       - echo "Setting Environment Variables related to AWS CLI for Kube Config Setup"          
       - CREDENTIALS=$(aws sts assume-role --role-arn $EKS_KUBECTL_ROLE_ARN --role-session-name codebuild-kubectl --duration-seconds 900)
@@ -48,7 +46,7 @@ phases:
       - kubectl apply -f kube-manifests/
       - echo "Completed applying changes to Kubernetes Objects"           
       # Create Artifacts which we can use if we want to continue our pipeline for other stages
-      - printf '[{"name":"01-DEVOPS-Nginx-Deployment.yml","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > build.json
+      - printf '[{"name":"deployment.yml","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > build.json
       # Additional Commands to view your credentials      
       #- echo "Credentials Value is..  ${CREDENTIALS}"      
       #- echo "AWS_ACCESS_KEY_ID...  ${AWS_ACCESS_KEY_ID}"            
