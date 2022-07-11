@@ -40,7 +40,7 @@ This repository contains the following files:
 Any arguments that you pass to `up.sh` will be forwarded to the AWS CLI commands within the script. Thus, it is possible to specify an explicit region fo the cluster as follows:
 
 ~~~bash
-./iac.sh --region eu-west-1
+./iac.sh --region us-east-1
 ~~~
 
 
@@ -79,9 +79,9 @@ Dockerfile
 app1
 index.html
 kube-manifests
-01-DEVOPS-Nginx-Deployment.yml
-02-DEVOPS-Nginx-NodePortService.yml
-03-DEVOPS-Nginx-ALB-IngressService.yml
+deployment.yml
+service.yml
+Ingress.yml
 Commit code and Push to CodeCommit Repo
 Verify the same on CodeCommit Repository in AWS Management console.
 
@@ -92,9 +92,9 @@ Dockerfile
 app1
 index.html
 kube-manifests
-01-DEVOPS-Nginx-Deployment.yml
-02-DEVOPS-Nginx-NodePortService.yml
-03-DEVOPS-Nginx-ALB-IngressService.yml
+deployment.yml
+service.yml
+Ingress.yml
 
 3. Create STS Assume IAM Role for CodeBuild to interact with AWS EKS:
 
@@ -184,6 +184,10 @@ Add Environment Variables
 REPOSITORY_URI = ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/eks-devops-nginx
 EKS_KUBECTL_ROLE_ARN = arn:aws:iam::ACCOUNT_ID:role/EksCodeBuildKubectlRole
 EKS_CLUSTER_NAME =  jay-cluster
+AWS_ACCOUNT_ID = 060949986764
+AWS_DEFAULT_REGION = us-east-1
+IMAGE_REPO_NAME = eks-devops-nginx
+IMAGE_TAG = latest
 Buildspec
 leave to defaults
 Logs
