@@ -196,3 +196,36 @@ Deploy
 Click on Skip Deploy Stage
 Review
 Review and click on Create Pipeline
+
+
+Updae CodeBuild Role to have access to ECR full access:
+
+First pipeline run will fail as CodeBuild not able to upload or push newly created Docker Image to ECR Repostory
+Update the CodeBuild Role to have access to ECR to upload images built by codeBuild.
+Role Name: codebuild-eks-devops-cb-for-pipe-service-role
+Policy Name: AmazonEC2ContainerRegistryFullAccess
+Make changes to index.html (Update as V2), locally and push change to CodeCommit
+
+
+Update CodeBuild Role to have access to STS Assume Role we have created using STS Assume Role Policy:
+
+Go to Services IAM -> Policies -> Create Policy
+In Visual Editor Tab
+Service: STS
+Actions: Under Write - Select AssumeRole
+Resources: Specific
+Add ARN
+Specify ARN for Role: arn:aws:iam::180789647333:role/EksCodeBuildKubectlRole
+Click Add
+
+# For Role ARN, replace your account id here, refer step-07 environment variable EKS_KUBECTL_ROLE_ARN for more details
+arn:aws:iam::<your-account-id>:role/EksCodeBuildKubectlRole
+Click on Review Policy
+Name: eks-codebuild-sts-assume-role
+Description: CodeBuild to interact with EKS cluster to perform changes
+Click on Create Policy
+
+ Associate Policy to CodeBuild Role:
+
+Role Name: codebuild-eks-devops-cb-for-pipe-service-role
+Policy to be associated: eks-codebuild-sts-assume-role
