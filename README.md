@@ -54,7 +54,7 @@ ECR Full Access Policy: AmazonEC2ContainerRegistryFullAccess
 STS Assume Policy: eks-codebuild-sts-assume-role
 STS Assume Role: EksCodeBuildKubectlRole
 
-Create ECR Repository for our Application Docker Images:
+1. Create ECR Repository for our Application Docker Images:
 
 Go to Services -> Elastic Container Registry -> Create Repository
 Name: eks-devops-nginx
@@ -64,8 +64,8 @@ Click on Create Repository
 Make a note of Repository name
 
 
-Create CodeCommit Repository
-Step-05: Create CodeCommit Repository
+2. Create CodeCommit Repository
+ Create CodeCommit Repository
 
 Code Commit Introduction
 
@@ -96,7 +96,7 @@ kube-manifests
 02-DEVOPS-Nginx-NodePortService.yml
 03-DEVOPS-Nginx-ALB-IngressService.yml
 
-Create STS Assume IAM Role for CodeBuild to interact with AWS EKS:
+3. Create STS Assume IAM Role for CodeBuild to interact with AWS EKS:
 
 # Export your Account ID
 export ACCOUNT_ID=180789647333
@@ -147,7 +147,7 @@ EKS_CLUSTER_NAME = jay-cluster
 
 
 
-Create CodePipeline:
+4. Create CodePipeline:
 
 Create CodePipeline
 Go to Services -> CodePipeline -> Create Pipeline
@@ -198,7 +198,7 @@ Review
 Review and click on Create Pipeline
 
 
-Updae CodeBuild Role to have access to ECR full access:
+5. Update CodeBuild Role to have access to ECR full access:
 
 First pipeline run will fail as CodeBuild not able to upload or push newly created Docker Image to ECR Repostory
 Update the CodeBuild Role to have access to ECR to upload images built by codeBuild.
@@ -207,7 +207,7 @@ Policy Name: AmazonEC2ContainerRegistryFullAccess
 Make changes to index.html (Update as V2), locally and push change to CodeCommit
 
 
-Update CodeBuild Role to have access to STS Assume Role we have created using STS Assume Role Policy:
+6. Update CodeBuild Role to have access to STS Assume Role we have created using STS Assume Role Policy:
 
 Go to Services IAM -> Policies -> Create Policy
 In Visual Editor Tab
@@ -218,14 +218,14 @@ Add ARN
 Specify ARN for Role: arn:aws:iam::180789647333:role/EksCodeBuildKubectlRole
 Click Add
 
-# For Role ARN, replace your account id here, refer step-07 environment variable EKS_KUBECTL_ROLE_ARN for more details
+7. # For Role ARN, replace your account id here,  environment variable EKS_KUBECTL_ROLE_ARN for more details
 arn:aws:iam::<your-account-id>:role/EksCodeBuildKubectlRole
 Click on Review Policy
 Name: eks-codebuild-sts-assume-role
 Description: CodeBuild to interact with EKS cluster to perform changes
 Click on Create Policy
 
- Associate Policy to CodeBuild Role:
+ 8. Associate Policy to CodeBuild Role:
 
 Role Name: codebuild-eks-devops-cb-for-pipe-service-role
 Policy to be associated: eks-codebuild-sts-assume-role
