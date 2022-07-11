@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: eks-devops
-          image: CONTAINER_IMAGE
+          image: nginx
           ports:
             - containerPort: 80
