@@ -181,8 +181,8 @@ Role Name: Auto-populated
 Additional Configurations
 All leave to defaults except Environment Variables
 Add Environment Variables
-REPOSITORY_URI = ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/eks-devops-nginx
-EKS_KUBECTL_ROLE_ARN = arn:aws:iam::ACCOUNT_ID:role/EksCodeBuildKubectlRole
+REPOSITORY_URI = $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/eks-devops-nginx
+EKS_KUBECTL_ROLE_ARN = arn:aws:iam::$AWS_ACCOUNT_ID:role/EksCodeBuildKubectlRole
 EKS_CLUSTER_NAME =  jay-cluster
 AWS_ACCOUNT_ID = 060949986764
 AWS_DEFAULT_REGION = us-east-1
@@ -219,7 +219,7 @@ Service: STS
 Actions: Under Write - Select AssumeRole
 Resources: Specific
 Add ARN
-Specify ARN for Role: arn:aws:iam::180789647333:role/EksCodeBuildKubectlRole
+Specify ARN for Role: arn:aws:iam::$AWS_ACCOUNT_ID:role/EksCodeBuildKubectlRole
 Click Add
 
 7. # For Role ARN, replace your account id here,  environment variable EKS_KUBECTL_ROLE_ARN for more details
