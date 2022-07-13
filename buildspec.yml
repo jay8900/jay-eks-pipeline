@@ -28,7 +28,7 @@ phases:
       - echo "Build completed on `date`"
       - echo "Pushing the Docker image to ECR Repository"
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
-      - echo "Docker Image Push to ECR Completed -  $REPOSITORY_URI:$TAG" 
+      - echo "Docker Image Push to ECR Completed -  $REPOSITORY_URI:$IMAGE_TAG" 
       - echo "Update Image tag in kube-manifest..."
       - sed -i 's@CONTAINER_IMAGE@'"$IMAGE_REPO_NAME:$TAG"'@' kube-manifests/deployment.yml
       # Extracting AWS Credential Information using STS Assume Role for kubectl
