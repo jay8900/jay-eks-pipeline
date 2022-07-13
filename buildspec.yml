@@ -10,7 +10,7 @@ phases:
         - aws --version
         # Update Image tag in our Kubernetes Deployment Manifest        
         - echo "Update Image tag in kube-manifest..."
-        - sed -i 's@CONTAINER_IMAGE@'"$REPOSITORY_URI:$TAG"'@' kube-manifests/deployment.yml
+        - sed -i 's@CONTAINER_IMAGE@'"$IMAGE_REPO_NAME:$TAG"'@' kube-manifests/deployment.yml
         # Login to ECR Registry for docker to push the image to ECR Repository
         - echo "Login in to Amazon ECR..."
         - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
